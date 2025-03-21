@@ -4,7 +4,11 @@ import { useQuery } from '@tanstack/react-query';
 import { CitiesData, getCities } from './HTTPRequests';
 import { useState, useEffect, useCallback } from 'react';
 
-function SearchCities({ setSelectedCity }) {
+interface SearchCitiesProps {
+  setSelectedCity: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function SearchCities({ setSelectedCity }: SearchCitiesProps) {
   // const [searchTerm, setSearchTerm] = useState('');
   // const [selectedCity, setSelectedCity] = useState<CitiesData | null>(null);
 
@@ -16,13 +20,9 @@ function SearchCities({ setSelectedCity }) {
     queryFn: getCities,
   });
 
-  // Create debounced search function with 1s delay
-
   // Handle input change
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-  };
+
+  const citiesToDisplay = data ? data.filter((city) => city.code.includes(searchTerm.toLowerCase())) : [];
 
   if (isPending) return <LoadingSpinner size={36} color="#808080" />;
 
@@ -31,12 +31,19 @@ function SearchCities({ setSelectedCity }) {
   return (
     <div>
       {/* Input field */}
-      <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} onFocus={() => setShowDropdown(true)} />
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+        }}
+        onFocus={() => setShowDropdown(true)}
+      />
 
       {/* Dropdown that appears conditionally */}
-      {showDropdown && (
+      {showDropdown && citiesToDisplay.length > 0 && (
         <div>
-          {data.map((city, index) => (
+          {citiesToDisplay.map((city, index) => (
             <div
               key={index}
               onClick={() => {

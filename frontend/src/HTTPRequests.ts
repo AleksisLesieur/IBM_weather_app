@@ -38,6 +38,10 @@ export interface ForecastData {
 export async function getCities(): Promise<CitiesData[]> {
   const response = await api.get('/places');
 
+  console.log('IF YOU ARE SEEING THIS STOP TYPING!!!!!!!!!!!!!!!!');
+
+  console.log(response.data);
+
   if (Array.isArray(response.data)) {
     return response.data;
   }
@@ -47,8 +51,6 @@ export async function getCities(): Promise<CitiesData[]> {
 
 export async function getCityForecast(cityName: string) {
   const response = await api.post('/cityForecast', { cityName });
-
-  console.log(response.data);
 
   return response.data;
 }

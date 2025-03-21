@@ -4,7 +4,7 @@ function DisplayCityFiveDayForecast({ selectedCity }: { selectedCity: string }) 
   return (
     <>
       <div>{selectedCity}</div>
-      <button onClick={() => getCityForecast(selectedCity)}>debug me</button>
+      {/* <button onClick={() => getCityForecast(selectedCity)}>debug me</button> */}
     </>
   );
 }
