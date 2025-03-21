@@ -1,34 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Cloud, CloudRain, Sun, CloudSun, MapPin, Wind, Droplets, Gauge } from 'lucide-react';
-import styles from './WeatherApp.module.scss';
-import MostViewedCities from './MostViewedCities';
-import SearchCities from './SearchCities';
-import DisplayCityWeather from './DisplayCityWeather';
-import DisplayCityFiveDayForecast from './DisplayFiveDayForecast';
+import styles from './App.module.scss';
+import MostViewedCities from './pages/MostViewedCities';
+import SearchCities from './pages/SearchCities';
+import DisplayCityWeather from './pages/DisplayCityWeather';
+import DisplayCityFiveDayForecast from './pages/DisplayFiveDayForecast';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60,
-      retry: 0,
+      retry: 1,
     },
   },
 });
 
-// 1. mano atveju... nebus taip jog darys vel uzklausa i api po 1 minutes?
-// 2. kas tas retry? cia tipo jeigu kazkas nesuveikia bando vel?
-
 function App() {
   const [selectedCity, setSelectedCity] = useState('');
+  const [selectedCode, setSelectedCode] = useState('');
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div>A nice looking whatever...</div>
-      <SearchCities setSelectedCity={setSelectedCity} />
-      <MostViewedCities />
-      <DisplayCityWeather selectedCity={selectedCity} />
-      <DisplayCityFiveDayForecast selectedCity={selectedCity} />
+      <div className={styles.container}>
+        <header className={styles.appHeader}>
+          <h1>Weather Forecast</h1>
+        </header>
+        <div className={styles.searchContainer}>
+          <SearchCities setSelectedCity={setSelectedCity} setSelectedCode={setSelectedCode} />
+        </div>
+        <section className={styles.cityGrid}>
+          <MostViewedCities />
+        </section>
+        <section className={styles.weatherDisplay}>
+          <DisplayCityWeather selectedCity={selectedCity} selectedCode={selectedCode} />
+        </section>
+        <section className={styles.forecastDisplay}>
+          <DisplayCityFiveDayForecast selectedCity={selectedCity} selectedCode={selectedCode} />
+        </section>
+      </div>
     </QueryClientProvider>
   );
 }

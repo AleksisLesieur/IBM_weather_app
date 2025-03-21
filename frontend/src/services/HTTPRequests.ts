@@ -49,8 +49,8 @@ export async function getCities(): Promise<CitiesData[]> {
   return [];
 }
 
-export async function getCityForecast(cityName: string) {
-  const response = await api.post('/cityForecast', { cityName });
+export async function getCityForecast(cityCode: string) {
+  const response = await api.post('/cityForecast', { cityCode });
 
   return response.data;
 }

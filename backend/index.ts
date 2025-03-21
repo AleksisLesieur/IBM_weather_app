@@ -37,13 +37,13 @@ app.get('/', (req: Request, res: Response) => {
   res.json({ message: 'Welcome to the Weather API' });
 });
 
-app.post('/cityForecast', async (req: Request, res: Response): Promise<void> => {
+app.post('/cityForecast', async (req: Request, res: Response) => {
   try {
-    const fetchedData = await fetch(`https://api.meteo.lt/v1/places/${req.body.cityName}/forecasts/long-term`);
+    const fetchedData = await fetch(`https://api.meteo.lt/v1/places/${req.body.cityCode}/forecasts/long-term`);
 
     const forecastData = await fetchedData.json();
 
-    res.json(forecastData);
+    res.status(200).json(forecastData);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to fetch forecast data' });
