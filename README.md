@@ -116,7 +116,7 @@ npm install
 3. Install frontend dependencies:
 
 ```bash
-cd ../frontend
+cd frontend
 npm install
 ```
 
@@ -127,6 +127,7 @@ npm install
 1. Start the backend server:
 
 ```bash
+cd ..
 cd backend
 npm run dev
 ```
