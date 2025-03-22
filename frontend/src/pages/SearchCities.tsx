@@ -20,10 +20,8 @@ function SearchCities({ setSelectedCity, setSelectedCode }: SearchCitiesProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
-    if (value.length > 0) {
+    if (value.length === 0) {
       setShowDropdown(true);
-    } else {
-      setShowDropdown(false);
     }
   };
 
@@ -132,9 +130,9 @@ function SearchCities({ setSelectedCity, setSelectedCode }: SearchCitiesProps) {
               onClick={() => {
                 setSearchTerm(city.name);
                 setSelectedCity(city.name);
+                setSelectedCode(city.code);
                 saveMostPopularCities(city.code, city.name);
                 sendCityData(city.name);
-                setSelectedCode(city.code);
                 setShowDropdown(false);
               }}
             >

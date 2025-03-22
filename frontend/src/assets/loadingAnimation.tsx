@@ -1,9 +1,5 @@
 import React from 'react';
-
-interface LoadingSpinnerProps {
-  size?: number;
-  color?: string;
-}
+import { LoadingSpinnerProps } from '../services/interfaces';
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 24, color = 'currentColor' }) => {
   return (

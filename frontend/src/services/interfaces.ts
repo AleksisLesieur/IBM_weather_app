@@ -26,13 +26,6 @@ export interface ForecastTimestamps {
   conditionCode: string;
 }
 
-export interface ForecastData {
-  place: CitiesData;
-  forecastType: string;
-  forecastCreationTimeUtc: string;
-  forecastTimestamps: ForecastTimestamps[];
-}
-
 export interface DailyForecast {
   date: string;
   dayName: string;
@@ -59,4 +52,9 @@ export interface DailyDataMap {
 export interface SearchCitiesProps {
   setSelectedCity: React.Dispatch<React.SetStateAction<string>>;
   setSelectedCode: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface LoadingSpinnerProps {
+  size?: number;
+  color?: string;
 }

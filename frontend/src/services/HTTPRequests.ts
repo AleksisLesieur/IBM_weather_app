@@ -1,14 +1,9 @@
 import api from './axios';
-import { CitiesData } from './interfaces';
 
-export async function getCities(): Promise<CitiesData[]> {
+export async function getCities() {
   const response = await api.get('/places');
 
-  if (Array.isArray(response.data)) {
-    return response.data;
-  }
-
-  return [];
+  return response.data;
 }
 
 export async function getCityForecast(cityCode: string) {
