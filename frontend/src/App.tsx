@@ -20,6 +20,11 @@ function App() {
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedCode, setSelectedCode] = useState('');
 
+  const handleCitySelect = (cityName: string, cityCode: string) => {
+    setSelectedCity(cityName);
+    setSelectedCode(cityCode);
+  };
+
   return (
     <QueryClientProvider client={queryClient}>
       <div className={styles.container}>
@@ -30,7 +35,7 @@ function App() {
           <SearchCities setSelectedCity={setSelectedCity} setSelectedCode={setSelectedCode} />
         </div>
         <section className={styles.cityGrid}>
-          <MostViewedCities />
+          <MostViewedCities onCitySelect={handleCitySelect} />
         </section>
         <section className={styles.weatherDisplay}>
           <DisplayCityWeather selectedCity={selectedCity} selectedCode={selectedCode} />

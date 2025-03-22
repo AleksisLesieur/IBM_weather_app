@@ -1,5 +1,20 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Cloud, CloudRain, Sun, CloudSun, Calendar, Wind, Droplets } from 'lucide-react';
+import {
+  Cloud,
+  CloudRain,
+  Sun,
+  CloudSun,
+  Calendar,
+  Wind,
+  Droplets,
+  CloudLightning,
+  CloudDrizzle,
+  CloudHail,
+  CloudSnow,
+  Snowflake,
+  CloudFog,
+  CircleOff,
+} from 'lucide-react';
 import { ForecastTimestamps, getCityForecast } from '../services/HTTPRequests';
 import { useEffect } from 'react';
 import LoadingSpinner from '../assets/loadingAnimation';
@@ -11,7 +26,6 @@ function DisplayCityFiveDayForecast({ selectedCity, selectedCode }: { selectedCi
   const { mutate, data, isPending, isError, error } = useMutation({
     mutationFn: () => getCityForecast(selectedCode),
     onSuccess: (data) => {
-      // Store the result in the query cache for potential future use
       queryClient.setQueryData(['cityForecast', selectedCity], data);
     },
   });
@@ -22,29 +36,52 @@ function DisplayCityFiveDayForecast({ selectedCity, selectedCode }: { selectedCi
     }
   }, [selectedCity, mutate]);
 
-  // Helper function to get weather icon based on condition code
   const getWeatherIcon = (conditionCode: string) => {
-    // Map condition codes to icons
     switch (conditionCode.toLowerCase()) {
       case 'clear':
         return <Sun />;
-      case 'isolated-clouds':
-      case 'scattered-clouds':
-      case 'overcast':
-        return <Cloud />;
-      case 'light-rain':
-      case 'moderate-rain':
-      case 'heavy-rain':
-        return <CloudRain />;
       case 'partly-cloudy':
+        return <CloudSun />;
       case 'cloudy-with-sunny-intervals':
         return <CloudSun />;
+      case 'cloudy':
+        return <Cloud />;
+      case 'light-rain':
+        return <CloudDrizzle />;
+      case 'rain':
+        return <CloudRain />;
+      case 'heavy-rain':
+        return <CloudRain size={24} strokeWidth={2.5} />;
+      case 'thunder':
+        return <CloudLightning />;
+      case 'isolated-thunderstorms':
+        return <CloudLightning />;
+      case 'thunderstorms':
+        return <CloudLightning />;
+      case 'heavy-rain-with-thunderstorms':
+        return <CloudLightning size={24} strokeWidth={2.5} />;
+      case 'light-sleet':
+      case 'sleet':
+        return <CloudDrizzle />;
+      case 'freezing-rain':
+        return <CloudDrizzle />;
+      case 'hail':
+        return <CloudHail />;
+      case 'light-snow':
+        return <CloudSnow />;
+      case 'snow':
+        return <CloudSnow />;
+      case 'heavy-snow':
+        return <Snowflake size={24} />;
+      case 'fog':
+        return <CloudFog />;
+      case 'null':
+        return <CircleOff />;
       default:
         return <Cloud />;
     }
   };
 
-  // Helper function to get readable condition name
   const getConditionName = (conditionCode: string) => {
     return conditionCode
       .split('-')
@@ -52,19 +89,16 @@ function DisplayCityFiveDayForecast({ selectedCity, selectedCode }: { selectedCi
       .join(' ');
   };
 
-  // Helper function to format date as Day (e.g., "Monday")
   const formatDayName = (dateTimeString: string) => {
     const date = new Date(dateTimeString);
     return date.toLocaleDateString('en-US', { weekday: 'long' });
   };
 
-  // Helper function to format date as Month/Day (e.g., "Mar 21")
   const formatDate = (dateTimeString: string) => {
     const date = new Date(dateTimeString);
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
-  // Group forecasts by day and get daily high/low temperatures
   const getDailyForecasts = () => {
     if (!data || !data.forecastTimestamps) return [];
 
@@ -73,7 +107,7 @@ function DisplayCityFiveDayForecast({ selectedCity, selectedCode }: { selectedCi
     // Process all timestamps
     data.forecastTimestamps.forEach((forecast: ForecastTimestamps) => {
       const date = new Date(forecast.forecastTimeUtc);
-      const dateKey = date.toISOString().split('T')[0]; // YYYY-MM-DD
+      const dateKey = date.toISOString().split('T')[0];
 
       if (!dailyData[dateKey]) {
         dailyData[dateKey] = {
@@ -102,7 +136,6 @@ function DisplayCityFiveDayForecast({ selectedCity, selectedCode }: { selectedCi
       dailyData[dateKey].forecasts.push(forecast);
     });
 
-    // Calculate most common condition and average values
     Object.keys(dailyData).forEach((dateKey) => {
       // Find most common condition
       const conditionCounts: { [key: string]: number } = {};

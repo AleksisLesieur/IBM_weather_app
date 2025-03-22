@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
 import LoadingSpinner from '../assets/loadingAnimation';
-import { useQuery } from '@tanstack/react-query';
-import { CitiesData, getCities } from '../services/HTTPRequests';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { CitiesData, getCities, sendCityData } from '../services/HTTPRequests';
 import styles from './SearchCities.module.scss';
 
 interface SearchCitiesProps {
@@ -31,6 +31,38 @@ function SearchCities({ setSelectedCity, setSelectedCode }: SearchCitiesProps) {
     }
   };
 
+  function saveMostPopularCities(cityCode: string, cityName: string) {
+    let savingCount: { [key: string]: number } = {};
+    let savingName: { [key: string]: string } = {};
+
+    // Load existing city names from localStorage
+    const savedNames = localStorage.getItem('savedCitiesName');
+    if (savedNames) {
+      savingName = JSON.parse(savedNames);
+    }
+
+    // Add the new city name
+    savingName[cityCode] = cityName;
+
+    // Load existing city counts from localStorage
+    const savedData = localStorage.getItem('savedCitiesCode');
+    if (savedData) {
+      savingCount = JSON.parse(savedData);
+    }
+
+    // Update the count for this city
+    if (savingCount[cityCode]) {
+      savingCount[cityCode]++;
+    } else {
+      savingCount[cityCode] = 1;
+    }
+
+    // Save both objects back to localStorage
+    localStorage.setItem('savedCitiesCode', JSON.stringify(savingCount));
+    localStorage.setItem('savedCitiesName', JSON.stringify(savingName));
+
+    window.dispatchEvent(new Event('localStorageChange'));
+  }
   // Handle ESC key press to close dropdown
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -95,6 +127,8 @@ function SearchCities({ setSelectedCity, setSelectedCode }: SearchCitiesProps) {
               onClick={() => {
                 setSearchTerm(city.name);
                 setSelectedCity(city.name);
+                saveMostPopularCities(city.code, city.name);
+                sendCityData(city.name);
                 setSelectedCode(city.code);
                 setShowDropdown(false);
               }}

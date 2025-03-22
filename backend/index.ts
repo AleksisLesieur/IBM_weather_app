@@ -32,7 +32,6 @@ app.get('/places', async (req: any, res: any) => {
   }
 });
 
-// Routes
 app.get('/', (req: Request, res: Response) => {
   res.json({ message: 'Welcome to the Weather API' });
 });
@@ -44,6 +43,22 @@ app.post('/cityForecast', async (req: Request, res: Response) => {
     const forecastData = await fetchedData.json();
 
     res.status(200).json(forecastData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch forecast data' });
+  }
+});
+
+app.post('/cityName', async (req: Request, res: Response) => {
+  try {
+    const cityName = req.body.cityName;
+    const now = new Date();
+    const date = now.toDateString();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    console.log(`on ${date} at ${hours}:${minutes} the city named ${cityName} was clicked`);
+
+    res.status(200).json({ message: 'user click saved successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to fetch forecast data' });

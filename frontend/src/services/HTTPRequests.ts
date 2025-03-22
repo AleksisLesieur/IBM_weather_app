@@ -55,4 +55,10 @@ export async function getCityForecast(cityCode: string) {
   return response.data;
 }
 
+export async function sendCityData(cityName: string) {
+  const response = await api.post('/cityName', { cityName });
+
+  return response.data;
+}
+
 // : Promise<ForecastData>

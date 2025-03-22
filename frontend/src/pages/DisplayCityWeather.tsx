@@ -1,7 +1,23 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ForecastTimestamps, getCityForecast } from '../services/HTTPRequests';
 import { useEffect } from 'react';
-import { Cloud, CloudRain, Sun, CloudSun, MapPin, Wind, Droplets, Gauge, Thermometer } from 'lucide-react';
+import {
+  Cloud,
+  CloudRain,
+  CloudLightning,
+  Sun,
+  CloudSun,
+  MapPin,
+  Wind,
+  Droplets,
+  Gauge,
+  CloudDrizzle,
+  CloudHail,
+  CloudSnow,
+  Snowflake,
+  CloudFog,
+  CircleOff,
+} from 'lucide-react';
 import LoadingSpinner from '../assets/loadingAnimation';
 import styles from './DisplayCityWeather.module.scss';
 
@@ -11,7 +27,6 @@ function DisplayCityWeather({ selectedCity, selectedCode }: { selectedCity: stri
   const { mutate, data, isPending, isError, error } = useMutation({
     mutationFn: () => getCityForecast(selectedCode),
     onSuccess: (data) => {
-      // Store the result in the query cache for potential future use
       queryClient.setQueryData(['cityForecast', selectedCode], data);
     },
   });
@@ -22,7 +37,6 @@ function DisplayCityWeather({ selectedCity, selectedCode }: { selectedCity: stri
     }
   }, [selectedCode, mutate]);
 
-  // Format the current time for display
   const formatCurrentTime = () => {
     const now = new Date();
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -51,28 +65,52 @@ function DisplayCityWeather({ selectedCity, selectedCode }: { selectedCity: stri
     return `${day}, ${month} ${date} at ${hours}:${formattedMinutes}`;
   };
 
-  // Helper function to get weather icon based on condition code
   const getWeatherIcon = (conditionCode: string) => {
-    // Map condition codes to icons
     switch (conditionCode.toLowerCase()) {
       case 'clear':
         return <Sun />;
-      case 'isolated-clouds':
-      case 'scattered-clouds':
-      case 'overcast':
-        return <Cloud />;
-      case 'light-rain':
-      case 'moderate-rain':
-      case 'heavy-rain':
-        return <CloudRain />;
       case 'partly-cloudy':
         return <CloudSun />;
+      case 'cloudy-with-sunny-intervals':
+        return <CloudSun />;
+      case 'cloudy':
+        return <Cloud />;
+      case 'light-rain':
+        return <CloudDrizzle />;
+      case 'rain':
+        return <CloudRain />;
+      case 'heavy-rain':
+        return <CloudRain size={24} strokeWidth={2.5} />;
+      case 'thunder':
+        return <CloudLightning />;
+      case 'isolated-thunderstorms':
+        return <CloudLightning />;
+      case 'thunderstorms':
+        return <CloudLightning />;
+      case 'heavy-rain-with-thunderstorms':
+        return <CloudLightning size={24} strokeWidth={2.5} />;
+      case 'light-sleet':
+      case 'sleet':
+        return <CloudDrizzle />;
+      case 'freezing-rain':
+        return <CloudDrizzle />;
+      case 'hail':
+        return <CloudHail />;
+      case 'light-snow':
+        return <CloudSnow />;
+      case 'snow':
+        return <CloudSnow />;
+      case 'heavy-snow':
+        return <Snowflake size={24} />;
+      case 'fog':
+        return <CloudFog />;
+      case 'null':
+        return <CircleOff />;
       default:
         return <Cloud />;
     }
   };
 
-  // Helper function to get readable condition name
   const getConditionName = (conditionCode: string) => {
     return conditionCode
       .split('-')
@@ -105,7 +143,6 @@ function DisplayCityWeather({ selectedCity, selectedCode }: { selectedCity: stri
     );
   }
 
-  // Get current forecast (first timestamp)
   const currentForecast = data.forecastTimestamps[0];
 
   return (

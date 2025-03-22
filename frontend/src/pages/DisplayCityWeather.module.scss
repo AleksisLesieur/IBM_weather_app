@@ -10,7 +10,6 @@ $border-radius: 10px;
 $box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 $transition: all 0.3s ease;
 
-// Weather display container
 .weatherContainer {
   background-color: white;
   border-radius: $border-radius;
@@ -18,7 +17,6 @@ $transition: all 0.3s ease;
   box-shadow: $box-shadow;
 }
 
-// Header section with city name and date
 .weatherHeader {
   padding: 1.5rem;
   background: linear-gradient(135deg, $primary-color, darken($primary-color, 15%));
@@ -37,7 +35,6 @@ $transition: all 0.3s ease;
   }
 }
 
-// Main weather display
 .mainWeather {
   display: flex;
   justify-content: space-between;
@@ -82,7 +79,6 @@ $transition: all 0.3s ease;
   }
 }
 
-// Weather details grid
 .weatherDetailsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -119,7 +115,6 @@ $transition: all 0.3s ease;
   }
 }
 
-// Loading and error states
 .loadingState {
   padding: 3rem;
   text-align: center;
@@ -162,7 +157,6 @@ $transition: all 0.3s ease;
   color: $light-text;
 }
 
-// Responsive adjustments
 @media (max-width: 768px) {
   .mainWeather {
     flex-direction: column;
