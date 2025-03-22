@@ -226,7 +226,7 @@ function DisplayCityFiveDayForecast({ selectedCity, selectedCode }: { selectedCi
 
               <div className={styles.infoItem}>
                 <Wind size={16} />
-                <div className={styles.infoValue}>{day.avgWindSpeed}m/s</div>
+                <div className={styles.infoValue}>{day.avgWindSpeed} m/s</div>
               </div>
             </div>
           </div>

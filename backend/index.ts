@@ -32,10 +32,6 @@ app.get('/places', async (req: any, res: any) => {
   }
 });
 
-app.get('/', (req: Request, res: Response) => {
-  res.json({ message: 'Welcome to the Weather API' });
-});
-
 app.post('/cityForecast', async (req: Request, res: Response) => {
   try {
     const fetchedData = await fetch(`https://api.meteo.lt/v1/places/${req.body.cityCode}/forecasts/long-term`);

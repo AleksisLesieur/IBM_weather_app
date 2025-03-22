@@ -19,11 +19,6 @@ function App() {
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedCode, setSelectedCode] = useState('');
 
-  const handleCitySelect = (cityName: string, cityCode: string) => {
-    setSelectedCity(cityName);
-    setSelectedCode(cityCode);
-  };
-
   return (
     <QueryClientProvider client={queryClient}>
       <div className={styles.container}>

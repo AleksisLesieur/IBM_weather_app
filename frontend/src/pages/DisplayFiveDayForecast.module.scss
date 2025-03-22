@@ -146,10 +146,10 @@ $transition: all 0.3s ease;
   .loadingText {
     color: $light-text;
     font-size: 1.1rem;
-  }
 
-  .loadingCity {
-    font-weight: 600;
-    color: $primary-color;
+    .loadingCity {
+      font-weight: 600;
+      color: $primary-color;
+    }
   }
 }

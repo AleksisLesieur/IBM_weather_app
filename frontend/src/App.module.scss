@@ -1,6 +1,3 @@
-// WeatherApp.module.scss
-
-// Variables
 $primary-color: #4a6fa5;
 $secondary-color: #f0f5ff;
 $accent-color: #ff9e45;
@@ -10,7 +7,6 @@ $border-radius: 10px;
 $box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 $transition: all 0.3s ease;
 
-// Base styles
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -19,337 +15,41 @@ $transition: all 0.3s ease;
   color: $text-color;
   background-color: #f8faff;
   min-height: 100vh;
-}
-
-.appHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-
-  h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: $primary-color;
-    margin: 0;
-  }
-}
-
-// Search component styles
-.searchContainer {
-  background-color: white;
-  border-radius: $border-radius;
-  padding: 1.5rem;
-  box-shadow: $box-shadow;
-  margin-bottom: 2rem;
-  position: relative;
-  z-index: 10;
-
-  h2 {
-    margin-top: 0;
-    color: $primary-color;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-}
-
-.searchWrapper {
-  position: relative;
-  width: 100%;
-}
-
-.searchBar {
-  display: flex;
-  width: 100%;
-
-  input {
-    flex: 1;
-    padding: 0.75rem 1rem;
-    border: 1px solid #ddd;
-    border-right: none;
-    border-radius: $border-radius 0 0 $border-radius;
-    font-size: 1rem;
-    outline: none;
-    transition: $transition;
-
-    &:focus {
-      border-color: $primary-color;
-      box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
-    }
-  }
-
-  button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: $primary-color;
-    color: white;
-    border: none;
-    min-width: 3.5rem;
-    border-radius: 0 $border-radius $border-radius 0;
-    cursor: pointer;
-    transition: $transition;
-
-    &:hover {
-      background-color: darken($primary-color, 10%);
-    }
-  }
-}
-
-.dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: white;
-  border-radius: 0 0 $border-radius $border-radius;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  margin-top: 2px;
-  max-height: 300px;
-  overflow-y: auto;
-  z-index: 20;
-  border: 1px solid #eee;
-}
-
-.dropdownItem {
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-  transition: $transition;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #f5f5f5;
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  &:hover {
-    background-color: $secondary-color;
-  }
-
-  .cityName {
-    font-weight: 500;
-  }
-
-  .cityCode {
-    color: $light-text;
-    font-size: 0.9rem;
-    background-color: #f5f5f5;
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-  }
-}
-
-.noResults {
-  padding: 1rem;
-  text-align: center;
-  color: $light-text;
-}
-
-.errorMessage {
-  color: #e74c3c;
-  padding: 0.5rem 0;
-  font-size: 0.9rem;
-}
-
-// Most viewed cities
-// .cityGrid {
-//   display: grid;
-//   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-//   gap: 1.5rem;
-//   margin-bottom: 2rem;
-
-//   .cityCard {
-//     background-color: white;
-//     border-radius: $border-radius;
-//     padding: 1.5rem;
-//     box-shadow: $box-shadow;
-//     cursor: pointer;
-//     transition: $transition;
-
-//     &:hover {
-//       transform: translateY(-4px);
-//       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-//     }
-
-//     .cityName {
-//       font-size: 1.25rem;
-//       font-weight: 600;
-//       margin-bottom: 0.5rem;
-//       display: flex;
-//       align-items: center;
-
-//       svg {
-//         margin-right: 0.5rem;
-//         color: $primary-color;
-//       }
-//     }
-
-//     .cityWeather {
-//       display: flex;
-//       align-items: center;
-//       margin-top: 1rem;
-
-//       .weatherIcon {
-//         font-size: 2.5rem;
-//         margin-right: 1rem;
-//         color: $accent-color;
-//       }
-
-//       .temperature {
-//         font-size: 2rem;
-//         font-weight: 700;
-//       }
-
-//       .description {
-//         color: $light-text;
-//         margin-left: 0.5rem;
-//       }
-//     }
-//   }
-// }
-
-// Weather display
-.weatherDisplay {
-  background-color: white;
-  border-radius: $border-radius;
-  padding: 2rem;
-  box-shadow: $box-shadow;
-  margin-bottom: 2rem;
-
-  .weatherHeader {
+  .appHeader {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     margin-bottom: 2rem;
 
-    .cityInfo {
-      h2 {
-        font-size: 2rem;
-        margin: 0 0 0.5rem 0;
-        display: flex;
-        align-items: center;
-
-        svg {
-          margin-right: 0.75rem;
-          color: $primary-color;
-        }
-      }
-
-      .date {
-        color: $light-text;
-        font-size: 1rem;
-      }
-    }
-
-    .currentTemp {
-      display: flex;
-      align-items: center;
-
-      .weatherIcon {
-        font-size: 3.5rem;
-        color: $accent-color;
-        margin-right: 1rem;
-      }
-
-      .temperature {
-        font-size: 3rem;
-        font-weight: 700;
-      }
-
-      .description {
-        display: block;
-        color: $light-text;
-        font-size: 1.1rem;
-        margin-top: 0.25rem;
-      }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: $primary-color;
+      margin: 0;
     }
   }
-
-  .weatherDetails {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.5rem;
-
-    .detailCard {
-      background-color: $secondary-color;
-      border-radius: $border-radius;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-
-      svg {
-        color: $primary-color;
-        margin-bottom: 0.5rem;
-        font-size: 1.5rem;
-      }
-
-      .label {
-        color: $light-text;
-        margin-bottom: 0.25rem;
-        font-size: 0.9rem;
-      }
-
-      .value {
-        font-size: 1.25rem;
-        font-weight: 600;
-      }
-    }
+  .searchContainer {
+    background-color: white;
+    border-radius: $border-radius;
+    padding: 1.5rem;
+    box-shadow: $box-shadow;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 10;
   }
-}
-
-// Forecast display
-.forecastDisplay {
-  background-color: white;
-  border-radius: $border-radius;
-  padding: 2rem;
-  box-shadow: $box-shadow;
-
-  h2 {
-    color: $primary-color;
-    margin-top: 0;
-    margin-bottom: 1.5rem;
+  .weatherDisplay {
+    background-color: white;
+    border-radius: $border-radius;
+    padding: 2rem;
+    box-shadow: $box-shadow;
+    margin-bottom: 2rem;
   }
 
-  .forecastGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-
-    .forecastDay {
-      background-color: $secondary-color;
-      border-radius: $border-radius;
-      padding: 1rem;
-      text-align: center;
-
-      .day {
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-      }
-
-      .weatherIcon {
-        font-size: 2rem;
-        color: $accent-color;
-        margin: 0.5rem 0;
-      }
-
-      .tempRange {
-        display: flex;
-        justify-content: center;
-
-        .tempMax {
-          font-weight: 600;
-          margin-right: 0.5rem;
-        }
-
-        .tempMin {
-          color: $light-text;
-        }
-      }
-    }
+  .forecastDisplay {
+    background-color: white;
+    border-radius: $border-radius;
+    padding: 1rem 2rem 2rem 2rem;
+    box-shadow: $box-shadow;
   }
 }
 
@@ -357,37 +57,34 @@ $transition: all 0.3s ease;
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
-  }
+    .appHeader {
+      flex-direction: column;
+      align-items: flex-start;
 
-  .appHeader {
-    flex-direction: column;
-    align-items: flex-start;
-
-    h1 {
-      margin-bottom: 1rem;
+      h1 {
+        margin-bottom: 1rem;
+      }
+    }
+    .searchContainer {
+      padding: 1rem;
     }
   }
 
-  .weatherHeader {
-    flex-direction: column;
+  // .weatherHeader {
+  //   flex-direction: column;
 
-    .cityInfo {
-      margin-bottom: 1rem;
-    }
-  }
-
-  .searchContainer {
-    padding: 1rem;
-  }
+  //   .cityInfo {
+  //     margin-bottom: 1rem;
+  //   }
+  // }
 }
 
 @media (max-width: 480px) {
   .container {
     padding: 0.75rem;
-  }
-
-  .searchContainer {
-    padding: 0.75rem;
-    margin-bottom: 1.5rem;
+    .searchContainer {
+      padding: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
   }
 }
