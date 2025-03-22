@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Cloud, CloudRain, Sun, CloudSun, MapPin, Wind, Droplets, Gauge } from 'lucide-react';
+import { useState } from 'react';
 import styles from './App.module.scss';
 import MostViewedCities from './pages/MostViewedCities';
 import SearchCities from './pages/SearchCities';
@@ -35,7 +34,7 @@ function App() {
           <SearchCities setSelectedCity={setSelectedCity} setSelectedCode={setSelectedCode} />
         </div>
         <section className={styles.cityGrid}>
-          <MostViewedCities onCitySelect={handleCitySelect} />
+          <MostViewedCities setSelectedCity={setSelectedCity} setSelectedCode={setSelectedCode} />
         </section>
         <section className={styles.weatherDisplay}>
           <DisplayCityWeather selectedCity={selectedCity} selectedCode={selectedCode} />

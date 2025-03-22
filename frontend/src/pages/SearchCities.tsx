@@ -1,26 +1,22 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import LoadingSpinner from '../assets/loadingAnimation';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { CitiesData, getCities, sendCityData } from '../services/HTTPRequests';
+import { useQuery } from '@tanstack/react-query';
+import { getCities, sendCityData } from '../services/HTTPRequests';
 import styles from './SearchCities.module.scss';
-
-interface SearchCitiesProps {
-  setSelectedCity: React.Dispatch<React.SetStateAction<string>>;
-  setSelectedCode: React.Dispatch<React.SetStateAction<string>>;
-}
+import { CitiesData, SearchCitiesProps } from '../services/interfaces';
 
 function SearchCities({ setSelectedCity, setSelectedCode }: SearchCitiesProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { isPending, isError, error, data } = useQuery<CitiesData[]>({
     queryKey: ['cities'],
     queryFn: getCities,
   });
 
-  // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
@@ -31,39 +27,44 @@ function SearchCities({ setSelectedCity, setSelectedCode }: SearchCitiesProps) {
     }
   };
 
+  const handleClearInput = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSearchTerm('');
+    setShowDropdown(true);
+
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
   function saveMostPopularCities(cityCode: string, cityName: string) {
     let savingCount: { [key: string]: number } = {};
     let savingName: { [key: string]: string } = {};
 
-    // Load existing city names from localStorage
     const savedNames = localStorage.getItem('savedCitiesName');
     if (savedNames) {
       savingName = JSON.parse(savedNames);
     }
 
-    // Add the new city name
     savingName[cityCode] = cityName;
 
-    // Load existing city counts from localStorage
     const savedData = localStorage.getItem('savedCitiesCode');
     if (savedData) {
       savingCount = JSON.parse(savedData);
     }
 
-    // Update the count for this city
     if (savingCount[cityCode]) {
       savingCount[cityCode]++;
     } else {
       savingCount[cityCode] = 1;
     }
 
-    // Save both objects back to localStorage
     localStorage.setItem('savedCitiesCode', JSON.stringify(savingCount));
     localStorage.setItem('savedCitiesName', JSON.stringify(savingName));
 
     window.dispatchEvent(new Event('localStorageChange'));
   }
-  // Handle ESC key press to close dropdown
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -77,7 +78,6 @@ function SearchCities({ setSelectedCity, setSelectedCode }: SearchCitiesProps) {
     };
   }, []);
 
-  // Handle click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -107,6 +107,7 @@ function SearchCities({ setSelectedCity, setSelectedCode }: SearchCitiesProps) {
     <div className={styles.searchWrapper}>
       <div className={styles.searchBar}>
         <input
+          ref={inputRef}
           type="text"
           value={searchTerm}
           onChange={handleInputChange}
@@ -114,10 +115,14 @@ function SearchCities({ setSelectedCity, setSelectedCode }: SearchCitiesProps) {
           placeholder="Search for a city..."
           className={styles.searchInput}
         />
+        {searchTerm && (
+          <button className={styles.clearButton} onClick={handleClearInput} aria-label="Clear search">
+            <X size={16} />
+          </button>
+        )}
         <button className={styles.searchButton}>{isPending ? <LoadingSpinner size={20} color="#ffffff" /> : <Search size={20} />}</button>
       </div>
 
-      {/* Dropdown */}
       {showDropdown && citiesToDisplay.length > 0 && (
         <div ref={dropdownRef} className={styles.dropdown}>
           {citiesToDisplay.map((city, index) => (

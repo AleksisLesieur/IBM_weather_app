@@ -15,10 +15,11 @@ import {
   CloudFog,
   CircleOff,
 } from 'lucide-react';
-import { ForecastTimestamps, getCityForecast } from '../services/HTTPRequests';
+import { getCityForecast } from '../services/HTTPRequests';
 import { useEffect } from 'react';
 import LoadingSpinner from '../assets/loadingAnimation';
 import styles from './DisplayFiveDayForecast.module.scss';
+import { DailyDataMap, DailyForecast, ForecastTimestamps } from '../services/interfaces';
 
 function DisplayCityFiveDayForecast({ selectedCity, selectedCode }: { selectedCity: string; selectedCode: string }) {
   const queryClient = useQueryClient();
@@ -99,12 +100,11 @@ function DisplayCityFiveDayForecast({ selectedCity, selectedCode }: { selectedCi
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
-  const getDailyForecasts = () => {
+  const getDailyForecasts = (): DailyForecast[] => {
     if (!data || !data.forecastTimestamps) return [];
 
-    const dailyData: { [key: string]: any } = {};
+    const dailyData: DailyDataMap = {};
 
-    // Process all timestamps
     data.forecastTimestamps.forEach((forecast: ForecastTimestamps) => {
       const date = new Date(forecast.forecastTimeUtc);
       const dateKey = date.toISOString().split('T')[0];
@@ -117,27 +117,26 @@ function DisplayCityFiveDayForecast({ selectedCity, selectedCode }: { selectedCi
           highTemp: forecast.airTemperature,
           lowTemp: forecast.airTemperature,
           conditions: [],
+          condition: '',
           humidity: [],
           windSpeed: [],
           forecasts: [],
+          avgHumidity: 0,
+          avgWindSpeed: 0,
         };
       }
 
-      // Update high/low temperatures
       dailyData[dateKey].highTemp = Math.max(dailyData[dateKey].highTemp, forecast.airTemperature);
       dailyData[dateKey].lowTemp = Math.min(dailyData[dateKey].lowTemp, forecast.airTemperature);
 
-      // Collect conditions and other data for determining most common
       dailyData[dateKey].conditions.push(forecast.conditionCode);
       dailyData[dateKey].humidity.push(forecast.relativeHumidity);
       dailyData[dateKey].windSpeed.push(forecast.windSpeed);
 
-      // Store the full forecast
       dailyData[dateKey].forecasts.push(forecast);
     });
 
     Object.keys(dailyData).forEach((dateKey) => {
-      // Find most common condition
       const conditionCounts: { [key: string]: number } = {};
       dailyData[dateKey].conditions.forEach((condition: string) => {
         conditionCounts[condition] = (conditionCounts[condition] || 0) + 1;
@@ -155,7 +154,6 @@ function DisplayCityFiveDayForecast({ selectedCity, selectedCode }: { selectedCi
 
       dailyData[dateKey].condition = mostCommonCondition;
 
-      // Calculate averages
       dailyData[dateKey].avgHumidity = Math.round(
         dailyData[dateKey].humidity.reduce((sum: number, val: number) => sum + val, 0) / dailyData[dateKey].humidity.length
       );
@@ -165,10 +163,9 @@ function DisplayCityFiveDayForecast({ selectedCity, selectedCode }: { selectedCi
       );
     });
 
-    // Convert to array and sort by date
     return Object.values(dailyData)
-      .sort((a: any, b: any) => a.date.localeCompare(b.date))
-      .slice(0, 5); // Limit to 5 days
+      .sort((a: DailyForecast, b: DailyForecast) => a.date.localeCompare(b.date))
+      .slice(0, 5);
   };
 
   if (isPending)
@@ -207,7 +204,7 @@ function DisplayCityFiveDayForecast({ selectedCity, selectedCode }: { selectedCi
       </div>
 
       <div className={styles.forecastGrid}>
-        {dailyForecasts.map((day: any, index) => (
+        {dailyForecasts.map((day: DailyForecast, index) => (
           <div key={index} className={styles.forecastDay}>
             <div className={styles.dayName}>{day.dayName}</div>
             <div className={styles.date}>{day.formattedDate}</div>

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ForecastTimestamps, getCityForecast } from '../services/HTTPRequests';
+import { getCityForecast } from '../services/HTTPRequests';
 import { useEffect } from 'react';
 import {
   Cloud,
@@ -32,7 +32,7 @@ function DisplayCityWeather({ selectedCity, selectedCode }: { selectedCity: stri
   });
 
   useEffect(() => {
-    if (selectedCode) {
+    if (selectedCode && selectedCode.trim() !== '') {
       mutate();
     }
   }, [selectedCode, mutate]);

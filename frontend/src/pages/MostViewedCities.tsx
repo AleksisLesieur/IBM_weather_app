@@ -2,12 +2,9 @@ import { useState, useEffect } from 'react';
 import styles from './MostViewedCities.module.scss';
 import { useQueryClient } from '@tanstack/react-query';
 import { getCityForecast, sendCityData } from '../services/HTTPRequests';
+import { SearchCitiesProps } from '../services/interfaces';
 
-interface MostViewedCitiesProps {
-  onCitySelect: (cityName: string, cityCode: string) => void;
-}
-
-function MostViewedCities({ onCitySelect }: MostViewedCitiesProps) {
+function MostViewedCities({ setSelectedCity, setSelectedCode }: SearchCitiesProps) {
   const [citiesArray, setCitiesArray] = useState<Array<{ code: string; name: string; views: number }>>([]);
   const queryClient = useQueryClient();
 
@@ -30,7 +27,9 @@ function MostViewedCities({ onCitySelect }: MostViewedCitiesProps) {
   };
 
   const handleCityClick = (cityCode: string, cityName: string) => {
-    onCitySelect(cityName, cityCode);
+    setSelectedCity(cityName);
+
+    setSelectedCode(cityCode);
 
     sendCityData(cityName);
 
@@ -57,7 +56,7 @@ function MostViewedCities({ onCitySelect }: MostViewedCitiesProps) {
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.title}>Recently Viewed</h3>
+      <h3 className={styles.title}>Mostly Viewed</h3>
       {topCities.length > 0 ? (
         <div className={styles.citiesList}>
           {topCities.map((city) => (
