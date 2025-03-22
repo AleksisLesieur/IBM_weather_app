@@ -230,9 +230,10 @@ const topCities = citiesArray.slice(0, 5);
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Copyright (c) 2025 IBM_WEATHER_APP
+Released under the MIT License. Users are free to use, modify, and distribute this software, subject to including the original copyright notice in any substantial copies of the software.
 
 ## Acknowledgements
 
 - [api.meteo.lt](https://api.meteo.lt) for providing the weather forecast data
-- Icons from [insert icon source if used]
+- Icons from Lucide react
